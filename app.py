@@ -8,6 +8,7 @@ import os
 
 st.title("Hola, GoalBuster!")
 st.write("FIREBASE_PRIVATE_KEY:", os.environ.get("FIREBASE_PRIVATE_KEY"))
+st.write("FIREBASE_PROJECT_ID:", os.environ.get("FIREBASE_PROJECT_ID"))
 #st.write("¡Tu app Streamlit está funcionando!")
 
 firebase_config =  {
