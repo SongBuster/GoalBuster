@@ -11,7 +11,7 @@ st.title("Hola, GoalBuster!")
 # st.write("FIREBASE_PROJECT_ID:", os.environ.get("FIREBASE_PROJECT_ID"))
 #st.write("API_KEY:", st.secrets["firebase_config"]["API_KEY"])
 #st.write("¡Tu app Streamlit está funcionando!")
-st.json(st.secrets)
+#st.json(st.secrets)
 
 firebase_config =  {
     "apiKey": st.secrets["firebase_config"]["API_KEY"],
@@ -29,6 +29,10 @@ firebase_creedentials = {
     "private_key": st.secrets["firebase_credentials"]["FIREBASE_PRIVATE_KEY"].replace("\\n", "\n"),
     "client_email": st.secrets["firebase_credentials"]["FIREBASE_CLIENT_EMAIL"],
     "client_id": st.secrets["firebase_credentials"]["FIREBASE_CLIENT_ID"],
+    "token_uri" : st.secrets["firebase_credentials"]["TOKEN_URI"],
+    "auth_provider_x509_cert_url" : st.secrets["firebase_credentials"]["AUTH_X509_CERT"],
+    "client_x509_cert_url" : st.secrets["firebase_credentials"]["CLIENT_X509_CERT"],
+    "universe_domain" : st.secrets["firebase_credentials"]["UNIVERSE_DOMAIN"],
 }
 
 firebase = pyrebase.initialize_app(firebase_config)
