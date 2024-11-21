@@ -9,26 +9,26 @@ import os
 st.title("Hola, GoalBuster!")
 # st.write("FIREBASE_PRIVATE_KEY:", st.secrets["FIREBASE_PRIVATE_KEY"])
 # st.write("FIREBASE_PROJECT_ID:", os.environ.get("FIREBASE_PROJECT_ID"))
-st.write("API_KEY:", st.secrets["firebase_config"]["API_KEY"])
+#st.write("API_KEY:", st.secrets["firebase_config"]["API_KEY"])
 #st.write("¡Tu app Streamlit está funcionando!")
 st.json(st.secrets)
 
 firebase_config =  {
-    "apiKey": os.environ.get("API_KEY"),
-    "authDomain": os.environ.get("AUTH_DOMAIN"),
-    "databaseURL": os.environ.get("DATABASE_URL"),
-    "storageBucket": os.environ.get("STORAGE_BUCKET"),
-    "messagingSenderId": os.environ.get("MESSAGING_SENDER_ID"),
-    "appId": os.environ.get("APP_ID"),
+    "apiKey": st.secrets["firebase_config"]["API_KEY"],
+    "authDomain": st.secrets["firebase_config"]["AUTH_DOMAIN"],
+    "databaseURL": st.secrets["firebase_config"]["DATABASE_URL"],
+    "storageBucket": st.secrets["firebase_config"]["STORAGE_BUCKET"],
+    "messagingSenderId": st.secrets["firebase_config"]["MESSAGING_SENDER_ID"],
+    "appId": st.secrets["firebase_config"]["APP_ID"],
 }
 
 firebase_creedentials = {
-    "type": os.environ.get("FIREBASE_TYPE"),
-    "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
-    "private_key_id": os.environ.get("FIREBASE_PRIVATE_KEY_ID"),
-    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
-    "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
-    "client_id": os.environ.get("FIREBASE_CLIENT_ID"),
+    "type": st.secrets["firebase_credentials"]["FIREBASE_TYPE"], 
+    "project_id": st.secrets["firebase_credentials"]["FIREBASE_PROJECT_ID"] , 
+    "private_key_id": st.secrets["firebase_credentials"]["FIREBASE_PRIVATE_KEY_ID"] ,
+    "private_key": st.secrets["firebase_credentials"]["FIREBASE_PRIVATE_KEY"].replace("\\n", "\n"),
+    "client_email": st.secrets["firebase_credentials"]["FIREBASE_CLIENT_EMAIL"],
+    "client_id": st.secrets["firebase_credentials"]["FIREBASE_CLIENT_ID"],
 }
 
 firebase = pyrebase.initialize_app(firebase_config)
