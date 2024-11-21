@@ -13,7 +13,7 @@ firebase_config =  {
     "apiKey": os.environ.get("API_KEY"),
     "authDomain": os.environ.get("AUTH_DOMAIN"),
     "databaseURL": os.environ.get("DATABASE_URL"),
-    "storageBucket": os.environ.get("STORAGE_BUKET"),
+    "storageBucket": os.environ.get("STORAGE_BUCKET"),
     "messagingSenderId": os.environ.get("MESSAGING_SENDER_ID"),
     "appId": os.environ.get("APP_ID"),
 }
