@@ -7,6 +7,7 @@ import time
 import os
 
 st.title("Hola, GoalBuster!")
+st.write("FIREBASE_PRIVATE_KEY:", os.environ.get("FIREBASE_PRIVATE_KEY"))
 #st.write("¡Tu app Streamlit está funcionando!")
 
 firebase_config =  {
