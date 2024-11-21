@@ -7,7 +7,7 @@ import time
 import os
 
 st.title("Hola, GoalBuster!")
-st.write("FIREBASE_PRIVATE_KEY:", os.environ.get("FIREBASE_PRIVATE_KEY"))
+st.write("FIREBASE_PRIVATE_KEY:", st.secrets["FIREBASE_PRIVATE_KEY"]
 st.write("FIREBASE_PROJECT_ID:", os.environ.get("FIREBASE_PROJECT_ID"))
 st.write("API_KEY:", os.environ.get("API_KEY"))
 #st.write("¡Tu app Streamlit está funcionando!")
