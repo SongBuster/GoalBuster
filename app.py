@@ -11,7 +11,16 @@ import functions as fn
 
 firebase = pyrebase.initialize_app(v.firebase_config)
 auth = firebase.auth()
-db = fn.init_firestore()
+
+# Inicializa Firestore con Firebase Admin
+@st.cache_resource
+def init_firestore():
+    cred = credentials.Certificate(v.firebase_creedentials)  # Ruta a tu archivo JSON de credenciales
+    firebase_admin.initialize_app(cred)
+    return firestore.client()
+
+
+db = init_firestore()
 
 try:
     # Autenticar usuario
