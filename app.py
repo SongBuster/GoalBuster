@@ -33,6 +33,9 @@ try:
 
     placeholder = st.empty()
 
+    options = ["Jugadas","Jugadores en Pista"]
+    selected_option = st.selectbox("Selecciona una vista", options, key="vistas")
+
     refresh_interval = st.slider("Intervalo de actualización (segundos)", min_value=30, max_value=180, value=60)
 
     while True:
@@ -41,8 +44,7 @@ try:
         if doc.exists:
             with placeholder.container():                
                 fn.print_game(doc.to_dict())
-                options = ["Jugadas","Jugadores en Pista"]
-                selected_option = st.selectbox("Selecciona una vista", options, key="vistas")
+                
                 if selected_option == "Jugadas":
                     fn.print_actions_table(db)
                 elif selected_option == "Jugadores en Pista":

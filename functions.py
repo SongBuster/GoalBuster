@@ -71,6 +71,12 @@ def print_actions_table(db):
         player = action.get("player","")
         action["player"] = f"{player.get('jersey','')}-{player.get('name','')}"
                 
+        actionType = action.get("actionType","")
+        if actionType in (["Ataque"]):
+            action["A_D"] = "A"
+        else:
+            action["A_D"] = "D"
+
         seconds = action.get("gameTime",0)
         action["gameTime"] = segundos_string(seconds) 
         
@@ -87,6 +93,7 @@ def print_actions_table(db):
     html_rows = "".join(f"""
 <tr style="background-color: {action.get('backgroundColor','#ffffff')}">
     <td style="border: 1px solid black; padding: 5px;">{action.get('gameTime','')}</td>
+    <td style="border: 1px solid black; padding: 5px;">{action.get('A_D','')}</td>
     <td style="border: 1px solid black; padding: 5px;">{action.get('player','')}</td>
     <td style="border: 1px solid black; padding: 5px;">{action.get('actionLiteral','')}</td>
     <td style="border: 1px solid black; padding: 5px;">{action.get('actionResult','')}</td>
@@ -99,6 +106,7 @@ def print_actions_table(db):
     <thead style="background-color: #343a40; color: white;">
         <tr>
             <th style="border: 1px solid black; padding: 5px;">Tiempo</th>
+            <th style="border: 1px solid black; padding: 5px;">A/D</th>
             <th style="border: 1px solid black; padding: 5px;">Jugador</th>
             <th style="border: 1px solid black; padding: 5px;">Jugada</th>
             <th style="border: 1px solid black; padding: 5px;">Resultado</th>
