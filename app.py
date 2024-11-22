@@ -15,8 +15,9 @@ auth = firebase.auth()
 # Inicializa Firestore con Firebase Admin
 @st.cache_resource
 def init_firestore():
-    cred = credentials.Certificate(v.firebase_creedentials)  # Ruta a tu archivo JSON de credenciales
-    firebase_admin.initialize_app(cred)
+    if not firebase_admin._apps:
+        cred = credentials.Certificate(v.firebase_creedentials)  # Ruta a tu archivo JSON de credenciales
+        firebase_admin.initialize_app(cred)
     return firestore.client()
 
 
