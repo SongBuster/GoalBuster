@@ -20,13 +20,22 @@ def style_rows(df):
 def print_game(data):
     #st.write(f"Datos actuales:{data} ")
     fecha = data["date"].strftime("%d-%m-%Y %H:%M:%S")
-    st.write(f"Actualización: {fecha}")
+    st.caption(f"Actualización: {fecha}")
     rival = data["awayTeam"]
     goles_nuestros = data["ourGoals"]
     goles_rival = data["rivalGoals"]
-    st.subheader(f"Agustinos: {goles_nuestros} {rival}: {goles_rival}")
     tiempo_actual = data["currentTime"]
-    st.write(f"Tiempo actual: {segundos_string(tiempo_actual)}")
+
+    st.markdown(
+    f"""  
+        <p style="margin: 5px; font-size: 24px; color: darkblue;">Agustinos: {goles_nuestros}</p>
+        <p style="margin: 5px; font-size: 24px; color: darkred;">{rival}: {goles_rival}</p>
+        <p style="margin: 5px; font-size: 18px; color: black;">Tiempo: {segundos_string(tiempo_actual)}</p>
+    """,
+    unsafe_allow_html=True)
+    #st.subheader(f"Agustinos: {goles_nuestros} {rival}: {goles_rival}")
+    
+    #st.write(f"Tiempo actual: {segundos_string(tiempo_actual)}")
 
 def segundos_string(seconds):    
     minutes = seconds // 60
