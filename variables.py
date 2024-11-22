@@ -33,3 +33,5 @@ valores_fallo = {"FRACASO","GOL RIVAL","PARADA RIVAL","FALLO"}
 user_id = ""
 
 max_rows_in_table = 20
+
+current_time = 0

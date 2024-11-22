@@ -25,6 +25,7 @@ def print_game(data):
     goles_nuestros = data["ourGoals"]
     goles_rival = data["rivalGoals"]
     tiempo_actual = data["currentTime"]
+    v.current_time = tiempo_actual
 
     st.markdown(
     f"""  
@@ -42,14 +43,17 @@ def segundos_string(seconds):
     remaining = seconds % 60
     return f"{minutes:02}:{remaining:02}"
 
-def fetch_actions(db):
+def fetch_actions(db, reverse):
+
+    direction = firestore.Query.DESCENDING if reverse else firestore.Query.ASCENDING
+
     game_actions_ref = (
                     db.collection("users")
                     .document(v.user_id)
                     .collection("games")
                     .document(v.game_id)
                     .collection("gameActions")                    
-                    .order_by("gameTime", direction=firestore.Query.DESCENDING)  # Ordenar por gameTime                 
+                    .order_by("gameTime", direction=direction)  # Ordenar por gameTime                 
                     .stream()
                 )
 
@@ -59,7 +63,7 @@ def print_actions_table(db):
 
     game_actions_no_subst = ["Ataque","Defensa","Cambio","Sanción","Portero","Equipo"]
 
-    game_actions_ref = fetch_actions(db)
+    game_actions_ref = fetch_actions(db,True)
     
     filtered_actions = [
         doc.to_dict() for doc in game_actions_ref if doc.to_dict().get("actionType") != "Cambio"
@@ -149,7 +153,69 @@ def print_court_players(db):
         st.error("No hay jugadas")
 
 
+def print_stats(db):
     
+    game_actions_ref = fetch_actions(db,False)    
+    succ_att = 0
+    total_att = 0
+    throws = 0
+    rival_saves = 0
+    first_act = True
+    last_act_time = 0
+    secs_att = 0
+
+    total_def = 0
+    succ_def =  0
+    rival_throws = 0
+    suc_riv_th = 0
+    saves = 0
+    
+    
+    
+    for action in game_actions_ref:
+        data = action.to_dict()                        
+        if data.get("isFinalPlay"):      
+            if first_act:
+                last_act_time = 0
+                first_act = False      
+            if data.get("actionType") == "Ataque":            
+                secs_att += data.get("gameTime") - last_act_time
+                total_att += 1
+                if data.get("actionResult") in v.valores_exito:
+                    succ_att += 1
+                if data.get("actionLiteral")[:5].upper() == "LANZA":
+                    throws += 1
+                    if data.get("actionResult") == "PARADA RIVAL":
+                        rival_saves += 1            
+            else:
+                total_def += 1
+                if data.get("actionResult") in v.valores_exito:
+                    succ_def += 1
+                if data.get("actionType") == "Portero" and data.get("actionLiteral")[:5].upper() == "LANZA":
+                    rival_throws += 1
+                    if data.get("actionResult") in v.valores_fallo:
+                        suc_riv_th += 1
+                    if data.get("actionResult") == "PARADA":
+                        saves += 1                        
+            last_act_time = data.get("gameTime")
+
+    pct_suc_att = 0.0 if total_att == 0 else succ_att / total_att * 100
+    pct_suc_th = 0.0 if throws == 0 else succ_att / throws * 100
+    pct_rival_saves = 0.0 if throws + rival_saves == 0 else rival_saves / throws * 100
+    pct_att_time = 0.0 if v.current_time == 0 else secs_att / v.current_time * 100
+    pct_suc_def = 0.0 if total_def == 0 else succ_def / total_def * 100
+    pct_rival_throws = 0.0 if rival_throws == 0 else suc_riv_th / rival_throws * 100
+    pct_saves = 0.0 if suc_riv_th + saves == 0 else saves / (suc_riv_th + saves) * 100
+    pct_def_time = 0.0 if v.current_time == 0 else (v.current_time -  secs_att) / v.current_time * 100
+
+    st.markdown(f"Total ataques: <b>{total_att}</b>&nbsp;&nbsp;&nbsp;acabados en éxito: <b>{succ_att}</b>&nbsp;&nbsp;&nbsp;(<i>{pct_suc_att:.2f}%</i>)", unsafe_allow_html=True)
+    st.markdown(f"Lanzamientos: <b>{throws}</b>&nbsp;&nbsp;&nbsp;% éxito: <i>{pct_suc_th:.2f}%</i>&nbsp;&nbsp;&nbsp;paradas rival:&nbsp;{rival_saves}/{rival_saves + succ_att}&nbsp;<i>({pct_rival_saves:.2f}%</i>)", unsafe_allow_html=True)
+    st.markdown(f"<h6>Tiempo atacando: {segundos_string(secs_att)}&nbsp;&nbsp;(<i>{pct_att_time:.2f}</i>)</h6>", unsafe_allow_html=True)
+    st.divider()
+    st.markdown(f"Total defensas: <b>{total_def}</b>&nbsp;&nbsp;&nbsp;acabadas en éxito: <b>{succ_def}</b>&nbsp;&nbsp;&nbsp;(<i>{pct_suc_def:.2f}%</i>)", unsafe_allow_html=True)
+    st.markdown(f"Lanzamientos rival: <b>{rival_throws}</b>&nbsp;&nbsp;&nbsp;% éxito: <i>{pct_rival_throws:.2f}%</i>&nbsp;&nbsp;&nbsp;paradas:&nbsp;{saves}/{saves + suc_riv_th}&nbsp;<i>({pct_saves:.2f}%</i>)", unsafe_allow_html=True)
+    st.markdown(f"<h6>Tiempo defendiendo: {segundos_string(v.current_time - secs_att)}&nbsp;&nbsp;(<i>{pct_def_time:.2f}</i>)</h6>", unsafe_allow_html=True)
+
 
 
 # def print_actions(db):

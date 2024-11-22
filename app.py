@@ -33,7 +33,7 @@ try:
 
     placeholder = st.empty()
 
-    options = ["Jugadas","Jugadores en Pista"]
+    options = ["Jugadas","Jugadores en Pista","Estadísticas"]
     selected_option = st.selectbox("Selecciona una vista", options, key="vistas")
 
     refresh_interval = 60 #st.slider("Intervalo de actualización (segundos)", min_value=30, max_value=180, value=60)
@@ -49,6 +49,8 @@ try:
                     fn.print_actions_table(db)
                 elif selected_option == "Jugadores en Pista":
                     fn.print_court_players(db)
+                elif selected_option == "Estadísticas":
+                    fn.print_stats(db)
 
             time.sleep(refresh_interval)
         else:
