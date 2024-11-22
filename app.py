@@ -51,7 +51,7 @@ try:
             time.sleep(refresh_interval)
         else:
             with placeholder.container():
-                    st.warning("No se encontraron acciones para este juego.")
+                    st.warning("No se encontraron acciones para este partido.")
 except Exception as e:
     st.error(f"Error al autenticar o recuperar datos: {e}")
 
