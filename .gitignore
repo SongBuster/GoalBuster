@@ -167,3 +167,4 @@ venv/
 HandballLiveStats.json
 SECRETS
 config_vscode.txt
+.streamlit/
