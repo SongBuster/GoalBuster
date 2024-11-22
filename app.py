@@ -42,7 +42,7 @@ try:
             with placeholder.container():                
                 fn.print_game(doc.to_dict())
                 options = ["Jugadas","Jugadores en Pista"]
-                selected_option = st.selectbox("Selecciona una vista", options key="vistas")
+                selected_option = st.selectbox("Selecciona una vista", options, key="vistas")
                 if selected_option == "Jugadas":
                     fn.print_actions_table(db)
                 elif selected_option == "Jugadores en Pista":
