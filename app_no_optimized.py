@@ -6,8 +6,8 @@ import pandas as pd
 import time
 import os
 
-import variables_optimized as v
-import functions_optimized as fn
+import variables as v
+import functions as fn
 
 firebase = pyrebase.initialize_app(v.firebase_config)
 auth = firebase.auth()
@@ -27,7 +27,6 @@ try:
     # Autenticar usuario
     user = auth.sign_in_with_email_and_password(v.email, v.password)
     #st.success(f"Autenticado como: {user['email']}")
-    st.caption("Optimizado")
 
     # Obtener el UID del usuario autenticado
     v.user_id = user['localId']  # Este es el UID único del usuario en Firebase Authentication
@@ -45,7 +44,6 @@ try:
         if doc.exists:
             with placeholder.container():                
                 fn.print_game(doc.to_dict())
-                fn.fetch_actions(db)
                 
                 if selected_option == "Jugadas":
                     fn.print_actions_table(db)
